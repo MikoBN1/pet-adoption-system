@@ -8,8 +8,21 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     role: Optional[str] = None
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
     password: str
+    role: str
+    phone: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
 
 class User(UserBase):
     id: int
