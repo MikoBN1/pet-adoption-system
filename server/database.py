@@ -16,3 +16,6 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def init_models():
+    Base.metadata.create_all(bind=engine)
