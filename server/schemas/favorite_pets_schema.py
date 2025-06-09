@@ -7,7 +7,6 @@ class FavoritePetsBase(BaseModel):
     pet_id: Optional[int] = None
 
 class FavoritePetsCreate(FavoritePetsBase):
-    user_id: int
     pet_id: int
 
 class FavoritePets(FavoritePetsBase):
