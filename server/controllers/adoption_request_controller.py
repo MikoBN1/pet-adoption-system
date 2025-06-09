@@ -23,15 +23,15 @@ async def create_adoption_request(data: AdoptionRequestCreate, db: AsyncSession 
     return new_adoption_request
 
 @router.get("/{adoption_id}", response_model=AdoptionRequestSchema)
-async def get_user(adoption_id: int, db: AsyncSession = Depends(get_db)):
+async def get_adoption_request(adoption_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(AdoptionRequest).where(AdoptionRequest.id == adoption_id))
-    user = result.scalars().first()
-    if not user:
+    adoption_request = result.scalars().first()
+    if not adoption_request:
         raise HTTPException(status_code=404, detail="Adoption request not found")
-    return user
+    return adoption_request
 
 @router.delete("/{adoption_id}", response_model=dict[str, str])
-async def delete_user(adoption_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_adoption_request(adoption_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(AdoptionRequest).where(AdoptionRequest.id == adoption_id))
     adoption_request = result.scalars().first()
 
