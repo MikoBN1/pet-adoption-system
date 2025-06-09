@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from controllers import user_controller, auth_controller, pet_controller, shelter_controller, \
-    adoption_request_controller
+    adoption_request_controller, favorite_pets_controller
 from database import init_models
 app = FastAPI()
 @app.on_event("startup")
@@ -11,3 +11,4 @@ app.include_router(auth_controller.router)
 app.include_router(pet_controller.router)
 app.include_router(shelter_controller.router)
 app.include_router(adoption_request_controller.router)
+app.include_router(favorite_pets_controller.router)
