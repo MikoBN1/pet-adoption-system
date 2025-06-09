@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from database import get_db
 from models.adoption_request_model import AdoptionRequest
 from schemas.adoption_request_schema import AdoptionRequest as AdoptionRequestSchema
@@ -21,3 +21,23 @@ async def create_adoption_request(data: AdoptionRequestCreate, db: AsyncSession 
     await db.commit()
     await db.refresh(new_adoption_request)
     return new_adoption_request
+
+@router.get("/{adoption_id}", response_model=AdoptionRequestSchema)
+async def get_user(adoption_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(AdoptionRequest).where(AdoptionRequest.id == adoption_id))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Adoption request not found")
+    return user
+
+@router.delete("/{adoption_id}", response_model=dict[str, str])
+async def delete_user(adoption_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(AdoptionRequest).where(AdoptionRequest.id == adoption_id))
+    adoption_request = result.scalars().first()
+
+    if not adoption_request:
+        raise HTTPException(status_code=404, detail="Adoption request not found")
+
+    await db.delete(adoption_request)
+    await db.commit()
+    return {"message": "deleted successfully"}
