@@ -1,6 +1,5 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
-from typing import Optional, List
+from pydantic import BaseModel
+from typing import Optional
 
 class ShelterBase(BaseModel):
     shelter_name: Optional[str] = None
